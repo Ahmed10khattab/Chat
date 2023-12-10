@@ -78,9 +78,7 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 const currentClient = require('./redis_conn').currentClient
 
-// http.get('/b',(req,res)=>{
-//   res.send('sssssssss');
-//  })
+ 
 
 io.on('connection', (client) => {
   console.log('A user connected:', client.id);
@@ -91,46 +89,20 @@ io.on('connection', (client) => {
   client.on('joinRoom',  (userId) => {
     console.log(`${userId}`);
     client.join(userId);
-      // await currentClient.setEx(userId,24 * 60 * 60, client.id)
-      //  const newUser = await currentClient.get(userId)
-         // console.log(userId); 
- 
+     
   });
 
 
 
    client.on('sendMsg',async (data) => {
 
-console.log(data.teacherId);
-
-//const reciverId = data.teacherId
-     //const reciverId =await currentClient.get(data.teacherId)
-    //  console.log('////////////////////////////');
-    // console.log(reciverId);
-    // console.log('////////////////////////////');
-
+console.log(data.receiverID);
  
-   // console.log(data);
-    // io.emit('newMsg',{
-    //   msg:data.msg['msgTxt']   
- 
-    //  })
-    // io.to().emit('newMsg',{
-    //   msg:data.msg   
-
-    //  })
-    io.to(data.teacherId).emit('newMsg',{
+    io.to(data.receiverID).emit('newMsg',{
       msg:data.msg  ['msgTxt'] 
 
      })
-
-    //  client.on("joinRoom",(data1)=>{
-    //   console.log("mmmmmmmmmmmmmmmmmmmmmmm")
-    //   client.join(data1);
-    //   console.log(data1)
-    //    console.log("mmmmmmmmmmmmmmmmmmmmmmm")
-
-    //   })
+ 
     console.log(data.msg['msgTxt']);
 
 });
